@@ -14,6 +14,13 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import {
+  ApiBearerAuth,
+  ApiBody,
+  ApiConsumes,
+  ApiOperation,
+  ApiTags,
+} from '@nestjs/swagger';
 import { GetUser } from 'src/auth/get-user.decorators';
 import { User } from 'src/auth/user.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
@@ -23,6 +30,8 @@ import { TaskStatus } from './task-status.enum';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 
+@ApiBearerAuth()
+@ApiTags('tasks')
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
@@ -31,6 +40,7 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   @Get()
+  @ApiOperation({ summary: 'Get all tasks' })
   getTasks(
     @Query(ValidationPipe) filterDto: GetTasksFilterDto,
     @GetUser() user: User,
@@ -44,6 +54,7 @@ export class TasksController {
   }
 
   @Get('/:id')
+  @ApiOperation({ summary: 'Get a task' })
   getTaskById(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
@@ -52,6 +63,7 @@ export class TasksController {
   }
 
   @Post()
+  @ApiOperation({ summary: 'Create task' })
   @UsePipes(ValidationPipe)
   createTask(
     @Body() createTaskDto: CreateTaskDto,
@@ -66,6 +78,7 @@ export class TasksController {
   }
 
   @Delete('/:id')
+  @ApiOperation({ summary: 'Delete a task' })
   deleteTask(
     @Param('id', ParseIntPipe) id: number,
     @GetUser() user: User,
@@ -74,6 +87,20 @@ export class TasksController {
   }
 
   @Patch('/:id/status')
+  @ApiOperation({ summary: 'Update task status' })
+  @ApiConsumes('application/x-www-form-urlencoded')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      required: ['status'],
+      properties: {
+        status: {
+          type: 'string',
+          enum: [TaskStatus.OPEN, TaskStatus.IN_PROGRESS, TaskStatus.DONE],
+        },
+      },
+    },
+  })
   updateTaskStatus(
     @Param('id', ParseIntPipe) id: number,
     @Body('status', TaskStatusValidationPipe) status: TaskStatus,
