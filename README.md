@@ -6,30 +6,28 @@ NestJS Zero to Hero - Modern TypeScript Back-end Development
 $ npm install
 ```
 
+## Running postgres and pgadmin
+
+```bash
+docker-composer up -d
+```
+
+pgadmin is available on http://localhost/
+
 ## Running the app
 
 ```bash
 # development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
+$ yarn start:dev
 
 # production mode
-$ npm run start:prod
+$ yarn start:prod
 ```
 
 ## Test
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+$ yarn test:watch
 ```
 
 ## Swagger
