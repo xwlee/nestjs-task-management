@@ -1,0 +1,35 @@
+version: '3.8'
+services:
+  # tasks:
+  #   build: .
+  #   container_name: tasks
+  #   ports:
+  #     - "3000:3000"
+  postgres:
+    image: postgres
+    container_name: postgres
+    volumes:
+      - type: volume
+        source: postgres
+        target: /pgdata
+    hostname: postgres
+    ports:
+      - '5432:5432'
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: secret
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: pgadmin4
+    volumes:
+      - type: volume
+        source: pgadmin4
+        target: /var/lib/pgadmin
+    ports:
+      - '80:80'
+    environment:
+      PGADMIN_DEFAULT_EMAIL: user@domain.com
+      PGADMIN_DEFAULT_PASSWORD: secret
+volumes:
+  postgres:
+  pgadmin4:
