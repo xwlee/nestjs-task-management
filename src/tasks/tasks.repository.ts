@@ -1,14 +1,16 @@
-import { DataSource, Repository } from 'typeorm';
-import { Task } from './tasks.entity';
 import {
   Injectable,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
+import { DataSource, Repository } from 'typeorm';
+
+import { User } from '../auth/user.entity';
+
 import { CreateTaskDto } from './dto/create-task.dto';
-import { TaskStatus } from './tasks-status.enum';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
-import { User } from 'src/auth/user.entity';
+import { TaskStatus } from './tasks-status.enum';
+import { Task } from './tasks.entity';
 
 @Injectable()
 export class TasksRepository extends Repository<Task> {
