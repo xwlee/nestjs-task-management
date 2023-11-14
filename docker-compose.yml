@@ -2,35 +2,35 @@ version: '3.8'
 services:
   # tasks:
   #   build: .
-  #   container_name: tasks
   #   ports:
-  #     - "3000:3000"
+  #     - '3000:3000'
+  #   environment:
+  #     - STAGE=dev
+  #   env_file:
+  #     - .env.stage.dev
   postgres:
     image: postgres
-    container_name: postgres
+    restart: unless-stopped
     volumes:
-      - type: volume
-        source: postgres
-        target: /pgdata
+      - postgres:/var/lib/postgresql/data
     hostname: postgres
     ports:
       - '5432:5432'
-    restart: always
     environment:
-      POSTGRES_PASSWORD: secret
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: postgres
+      POSTGRES_DB: task-management
   pgadmin:
     image: dpage/pgadmin4
-    container_name: pgadmin4
+    restart: unless-stopped
     volumes:
-      - type: volume
-        source: pgadmin4
-        target: /var/lib/pgadmin
+      - pgadmin4:/var/lib/pgadmin
     ports:
-      - '80:80'
-    restart: always
+      - '3001:3001' # pgadmin default run on port 80
     environment:
       PGADMIN_DEFAULT_EMAIL: user@domain.com
       PGADMIN_DEFAULT_PASSWORD: secret
+      PGADMIN_LISTEN_PORT: 3001 # pgadmin default run on port 80
 volumes:
   postgres:
   pgadmin4:
