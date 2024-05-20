@@ -1,5 +1,5 @@
 # Build stage
-FROM node:21.7.3-alpine AS build
+FROM node:22.2.0-alpine AS build
 
 USER node
 WORKDIR /home/node
@@ -9,7 +9,7 @@ RUN yarn install --frozen-lockfile
 RUN yarn build
 
 # Run stage
-FROM node:21.7.3-alpine
+FROM node:22.2.0-alpine
 
 USER node
 WORKDIR /home/node
